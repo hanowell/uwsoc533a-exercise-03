@@ -1,0 +1,44 @@
+---
+title: "Exercise 2"
+author: '[Your first name] [Your last name]'
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+## Setup
+
+Install the packages you'll need for this assignment if you haven't already.
+
+```{r setup}
+# Install pacman
+if (!require("pacman")) install.packages("pacman")
+# p_load function loads packages if installed, or install then loads otherwise
+pacman::p_load(dplyr, readr)
+```
+
+## Question 1
+
+### Data collection
+
+#### About the data
+
+For this question, you'll use 1-year total population estimates for King County, WA, from the American Community Survey (ACS). Think of these as estimates of total person-years lived during a particular calendar year. During this course, we'll assume for simplicity that there is no margin of error in these estimates, which is factually inaccurate.
+
+Learn about ACS here: https://www.census.gov/programs-surveys/acs/about.html
+
+#### Step 1: Download the data
+
+1. Download the data from here: ENTER URL
+2. Move the downloaded file into your R Project folder for this assignment
+
+#### Step 2: Read the data into R
+
+1. Since your working directory is your R Project folder, you can replace the `file_dir` string below to be an empty string `""`
+
+```{r q1-read-data}
+file_dir <- ".../"
+file_name <- "king_acs1_totpop.csv"
+file_path <- paste0(file_dir, file_name)
+readr::read_csv(file_path)
+```
+
