@@ -7,38 +7,283 @@ output: html_document
 
 ## Setup
 
-Install the packages you'll need for this assignment if you haven't already.
+**Install the packages you'll need for this assignment if you haven't already.**
 
 ```{r setup}
 # Install pacman
 if (!require("pacman")) install.packages("pacman")
 # p_load function loads packages if installed, or install then loads otherwise
-pacman::p_load(dplyr, readr)
+pacman::p_load(dplyr, knitr, kableExtra, readr)
 ```
 
-## Question 1
+**Replace the bracketed placeholders for the `Author` in the YAML header with your actual first and last name.**
+
+## Instructions
+
+**Each question contains instructions in bold, as you see here. Your responses should be in plain text, as below:**
+
+Hey! Don't put your answers in bold text, please! Thanks!
+
+**There are code blocks like the one below, which you will be instructed to fill in with code to calculate the quantities necessary to answer the question.**
+
+```{r}
+# Example code block
+```
+
+**Your code should store numerical or tabular answers as objects (e.g., a scalar, a vector, a table) in your environment. Below is an example.**
+
+```{r}
+my_calculation <- (4000 - 2000) / log(4000/2000)
+my_answer <- round(my_calculation, 0)
+```
+
+**Often, you will be asked to write your answer down in plain text below your code block. Below is an example of how you might do this that uses the example calculation and answer code above:**
+
+My answer is `r my_answer`.
+
+**In other cases, you will be asked to print the answer in tabular format before commenting on the results. For example**
+
+```{r}
+my_df <- data.frame(x = letters[1:3], y = 1:3, z = (1:3)^2)
+knitr::kable(my_df) %>%
+  kableExtra::column_spec(2:3, border_left = TRUE)
+```
+
+**Commentary below:**
+
+Looks like $z = y^2$.
+
+**Notice that the above answer uses MathJax to render math notation from $\LaTeX$. You may find it useful to write MathJax notation in-line by enclosing $\LaTeX$ in single dollar-sign symbols. Other times, you may want to center an equation with double dollar-sign symbols, as below:**
+
+$$
+z = y^2
+$$
+
+**Lastly, if you'd like to read a prettily-formatted version of these instructions, open up the `exercise.html` file in the exercise folder.**
+
+## Question set 1
 
 ### Data collection
 
 #### About the data
 
-For this question, you'll use 1-year total population estimates for King County, WA, from the American Community Survey (ACS). Think of these as estimates of total person-years lived during a particular calendar year. During this course, we'll assume for simplicity that there is no margin of error in these estimates, which is factually inaccurate.
+**For this question, you'll use starting, mid-year, and ending population counts from a fictitious population from 2018 through 2022.**
 
-Learn about ACS here: https://www.census.gov/programs-surveys/acs/about.html
+#### Read the data into R
 
-#### Step 1: Download the data
+**The data has four columns:**
 
-1. Download the data from here: ENTER URL
-2. Move the downloaded file into your R Project folder for this assignment
-
-#### Step 2: Read the data into R
-
-1. Since your working directory is your R Project folder, you can replace the `file_dir` string below to be an empty string `""`
+1. `year`**: year of a population count**
+2. `start`**: starting population count during** `year`
+3. `mid`**: mid-year population count during** `year`
+4. `end`**: ending population count during** `year`
 
 ```{r q1-read-data}
-file_dir <- ".../"
-file_name <- "king_acs1_totpop.csv"
-file_path <- paste0(file_dir, file_name)
-readr::read_csv(file_path)
+q01_data <- readr::read_csv("data/q01_data.csv")
 ```
 
+### Compute annual person-years lived and crude growth rate using various methods
+
+**Calculate the person-years lived and the crude growth rate in each year using each of the four person-year approximation methods we learned in class. Output the results in a table with the following structure:**
+
+1. `year`**: year when person-years are calculated**
+2. `py[x]`**: person-years calculated for** `year` **using method x, with a column for each of the four methods we learned, rounded to the nearest tenth of a person**
+3. `cgr[x]`**: crude growth rate calculated for** `year` **using person-years approximation method x, with a column for each of the four methods we learned, rounded to the nearest thousandth**
+
+**Then comment briefly on the results. You may wish to output two tables for convenient display of person-years and crude growth rates, respectively. If you wish, you may plot the results, as well, to further illustrate your points.**
+
+* **0.25 points for getting the methods mostly right**
+* **0.5 points for getting the right numerical answers**
+* **0.25 points for a well-reasoned, brief (3-5 sentence) commentary that speaks to the reasonableness of the assumptions of each person-year approximation method.**
+
+**Total available: 1 point**
+
+**NOTE: It is totally okay to sneak a peak at the code I wrote to produce this data to check the plausibility of your answer! Just know that in the real world, you won't have this ability. The code is in** `data/R/data-collection.R` **and organized by question number.**
+
+```{r}
+
+```
+
+**Commentary below**
+
+## Question set 2
+
+**Using the data from question 1, calculate the person years lived from 2018 through 2022 assuming that the growth rate was constant throughout the period.**
+
+**Output your result to the nearest tenth of a person-year in a brief paragraph where you reference your answer from question 1 to comment on the reasonableness of the constant growth rate assumption in this case.**
+
+* **0.25 points for getting the steps mostly right**
+* **0.25 points for getting the right numerical answer**
+* **0.5 points for a well-reasoned, brief (3-5 sentence) commentary.**
+
+**Total available: 1 point**
+
+```{r}
+
+```
+
+**Commentary below:**
+
+## Question set 3
+
+### Data collection
+
+#### About the data
+
+**This question uses data from PHG Table 1.1 on pg. 10, which gives population sizes, births, deaths, net migration, and principle period rates by major area of the world.**
+
+**Our data set has the following columns:**
+
+1. `area`**: major area of the world**
+1. `births_k`**: number of births in** `area` **in thousands**
+1. `cbr_k`**: crude birth rate in** `area` **in thousands**
+
+#### Read in the data
+
+```{r}
+q03_data <- readr::read_csv("data/q03_data.csv")
+```
+
+#### Compute the person-years lived in the denominator of the crude birth rate
+
+**Using the data available in** `q03_data`**, calculate the number of person-years in the denominator of the crude birth rate for each area, appending it as a new column called** `person_years` **and displaying the altered table.**
+
+* **0.5 points for getting the steps mostly right**
+* **0.5 points for getting the right numerical answers.**
+
+**Total available: 1 point**
+
+```{r}
+
+```
+
+## Question set 4
+
+### Data collection
+
+#### About the data
+
+**These questions are about the employee data we used in week 1. There, we used the data to demonstrate (1) the analogy between all-cause employee termination and death processes, and (2) the flexibility of exact person-year data. I've augmented this data set with fictitious hire dates, dates of first promotion (if any), dates of second promotion (if any), and dates of termination (if any). You'll use these dates to define cohorts.**
+
+**The data has the following structure:**
+
+1. `id`**: an identifier for an employee represented by a row of data**
+1. `hire_date`**: the date that employee** `id` **was hired**
+1. `promo1_date`**: the date that employee** `id` **got their first promotion, if they ever did;** `NA` **otherwise**
+1. `promo2_date`**: the date that employee** `id` **got their second promotion, if they ever did;** `NA` **otherwise (will always be** `NA` **if the employee never got their first promotion.**
+1. `termination_date`**: date that employee** `id` **left the company, if they ever did;** `NA` **otherwise**
+
+#### Read in the data
+
+```{r}
+q04_data <- readr::read_csv("data/q04_data.csv")
+```
+
+**VERY IMPORTANT NOTE: When analyzing this data, 
+
+#### Calculate hiring cohorts
+
+**Using this data and pretending like the current date is `r max(q04_data$termination_date, na.rm = TRUE) + 1` (HINT: this important for understand whether someone is eligible to be included in the denominator of a probability), compute the distribution of CURRENT employees by hire year cohort, both in terms of employee headcount and share of total headcount (formatted as percent to nearest tenth of a percent). Output the result as a table and comment briefly (1-3 sentences) on the results.**
+
+* **0.125 points for getting the steps mostly right**
+* **0.25 points for getting the right numerical answers**
+* **0.125 points for a well-reasoned summary of the results**
+
+```{r}
+
+```
+
+**Commentary below:**
+
+
+**Compute the distribution of CURRENT employees by hire month, both in terms of employee headcount and share of total headcount (formatted as percent to nearest tenth of a percent). Output the result as a table and comment briefly (3-5 sentences) on the results, including whether these hire month counts represent cohorts and if so how.**
+
+* **0.125 points for getting the steps mostly right**
+* **0.25 points for getting the right numerical answers**
+* **0.125 points for a well-reasoned summary of the results**
+
+```{r}
+
+```
+
+**Commentary below:**
+
+
+
+**TIP: You may find it useful to convert dates to** `character` **and then taking sub-strings to grab years from dates. Or you could use a package like** `lubridate` **instead. I'll allow it.**
+
+**Total available: 1 point**
+
+## Question 5
+
+**Using the same data from question 4, calculate for each hire year cohort the probability of first promotion within 180 days. Output the result in a table. BE CAREFUL DEFINING THE DENOMINATOR AND NOTE THE ABSENCE OF A CRUCIAL WORD DEFINING THE COHORT COMPARED TO QUESTION 4!**
+
+* **0.4 points for getting the steps mostly right.**
+* **0.4 points for getting numerically accurate answers.**
+
+```{r}
+
+```
+
+
+**Now use the data from question 4 to calculate for each first-promotion year cohort the probability of getting a second-promotion within 180 days. Again, careful defining the denominator.**
+
+* **0.4 points for getting the steps mostly right.**
+* **0.4 points for getting numerically accurate answers.**
+
+```{r}
+
+```
+
+**Explain in 1-3 sentences why it doesn't make sense to take the probability of leaving the company across the entire data set without considering the beginning and end points of the cohort observation window.**
+
+* **0.4 points**
+
+**Commentary below:**
+
+
+
+**Total available: 2 points**
+
+## Question set 6
+
+### Data collection
+
+#### About the data
+
+**For this question, you will use data from the Human Mortality Database on age-specific mortality for five-year age groups (with an 80+ open age group) in Slovenia in 1988. The data has the following structure:**
+
+1. `age`**: the starting age for the age group represented by the row**
+1. `deaths`**: number of deaths in the age group in 1988**
+1. `exposure`**: person-years of exposure to the risk of death in the age group in 1988**
+
+#### Read in the data
+
+```{r}
+q06_data <- readr::read_csv("data/q06_data.csv")
+```
+
+#### Compute age-specific mortality rates
+
+**Using this data, compute the age-specific mortality rates (ASMRs) and proportion of person-years lived ($C_i$) for each age group and output the table with the appended columns below.**
+
+**0.5 points for getting the right numerical answers.**
+
+```{r}
+
+```
+
+#### Compute the crude death rate as a function of ASMRs and age structure
+
+**Using the calculations from above, calculate the crude death rate as a function of the ASMRs and age structure (NOT BY AGGREGATING DEATH COUNTS AND PERSON-YEARS).**
+
+* **0.25 points for showing the proper steps.**
+* **0.25 points for getting the right numerical answer in a full sentence below the code.**
+
+```{r}
+
+```
+
+**Commentary here:**
+
+**Total available: 1 point**
