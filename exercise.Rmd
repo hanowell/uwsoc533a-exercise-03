@@ -61,229 +61,68 @@ $$
 
 **Lastly, if you'd like to read a prettily-formatted version of these instructions, open up the `exercise.html` file in the exercise folder.**
 
-## Question set 1
+## Question set 1: Age-standardized crude death rates
 
 ### Data collection
 
-#### About the data
+**For this section, we'll use the age-specific mortality rate schedule and population structure of high-income and low-income countries, respectively, for the period between 2015 and 2020. The data comes from World Population Prospects 2019 reported by the United Nations Population Division. The income designations are based on World Bank income groups.**
 
-**For this question, you'll use starting, mid-year, and ending population counts from a fictitious population from 2018 through 2022.**
+**The original data sources are here:** https://population.un.org/wpp/Download/Standard/Mortality/
 
-#### Read the data into R
+**The data has one row per income level and age group (with the same age groups represented for each income level), and three columns:**
 
-**The data has four columns:**
+1. `income_level %in% c("Low-income countries", "High-income countries)`**: The World Bank income level for which the life table was calculated**
+1. `x`**: The exact age at the beginning of the age interval**
+1. `mx`**: The age-specific mortality rate for age interval** [`x`, `x + n`)
+1. `cx`**: The average proportion of population between ages** [`x`, `x + n`) **over the five-year period**
 
-1. `year`**: year of a population count**
-2. `start`**: starting population count during** `year`
-3. `mid`**: mid-year population count during** `year`
-4. `end`**: ending population count during** `year`
-
-```{r q1-read-data}
-q01_data <- readr::read_csv("data/q01_data.csv")
+```{r asmr_by_income, warning=FALSE, message=FALSE}
+asmr_by_income <- readRDS("data/unpp19.rds") %>%
+  dplyr::filter(
+    location %in% c("Low-income countries", "High-income countries"),
+    period == "2015-2020"
+  ) %>%
+  dplyr::rename(income_level = location) %>%
+  dplyr::mutate(cx = Lx / Tx[x==0]) %>%
+  dplyr::select(income_level, x, n, mx, cx)
 ```
 
-### Compute annual person-years lived and crude growth rate using various methods
+### Calculate the crude death rate (CDR) by income level
 
-**Calculate the person-years lived and the crude growth rate in each year using each of the four person-year approximation methods we learned in class. Output the results in a table with the following structure:**
+**Using only the age-specific mortality rates `mx` and age structure** `cx`**, compute the CDR by income level and report it below as a table with the following structure:**
 
-1. `year`**: year when person-years are calculated**
-2. `py[x]`**: person-years calculated for** `year` **using method x, with a column for each of the four methods we learned, rounded to the nearest tenth of a person**
-3. `cgr[x]`**: crude growth rate calculated for** `year` **using person-years approximation method x, with a column for each of the four methods we learned, rounded to the nearest thousandth**
-
-**Then comment briefly on the results. You may wish to output two tables for convenient display of person-years and crude growth rates, respectively. If you wish, you may plot the results, as well, to further illustrate your points.**
-
-* **0.25 points for getting the methods mostly right**
-* **0.5 points for getting the right numerical answers**
-* **0.25 points for a well-reasoned, brief (3-5 sentence) commentary that speaks to the reasonableness of the assumptions of each person-year approximation method.**
-
-**Total available: 1 point**
-
-**NOTE: It is totally okay to sneak a peak at the code I wrote to produce this data to check the plausibility of your answer! Just know that in the real world, you won't have this ability. The code is in** `data/R/data-collection.R` **and organized by question number.**
+* `income_level`: The income level
+* `cdr`: The CDR
 
 ```{r}
 
 ```
 
-**Commentary below**
+**Report the difference between the low-income and high-income CDRs below in a full sentence and comment on the finding in another sentence.**
 
-## Question set 2
 
-**Using the data from question 1, calculate the person years lived from 2018 through 2022 assuming that the growth rate was constant throughout the period.**
 
-**Output your result to the nearest tenth of a person-year in a brief paragraph where you reference your answer from question 1 to comment on the reasonableness of the constant growth rate assumption in this case.**
+### Calculate the age-standardized CDR by income level
 
-* **0.25 points for getting the steps mostly right**
-* **0.25 points for getting the right numerical answer**
-* **0.5 points for a well-reasoned, brief (3-5 sentence) commentary.**
+**Compute the age-standardized CDR by income level using three standards:**
 
-**Total available: 1 point**
+1. **High-income countries standard**
+1. **Low-income contries standard**
+1. **Standard constructed from the average of high-income and low-income countries**
 
-```{r}
+**Report the results in a table below with the following structure:**
 
-```
+1. `income_level`**: The income level**
+1. `cdr_[high/low/avg]`**: three columns, one for each of the standards indicated above and in the placeholder brackets (e.g.,** `cdr_high`**)**
 
-**Commentary below:**
+**Comment on the results in a brief paragraph below. If you like, create plots or tables referencing the components of the original dataset to help explain the results. But words can suffice.**
 
-## Question set 3
+
+
+## Question set 2: Channel-standardized customer conversion rates
 
 ### Data collection
 
-#### About the data
+### Calculate the crude customer conversion rate for each website
 
-**This question uses data from PHG Table 1.1 on pg. 10, which gives population sizes, births, deaths, net migration, and principle period rates by major area of the world.**
-
-**Our data set has the following columns:**
-
-1. `area`**: major area of the world**
-1. `births_k`**: number of births in** `area` **in thousands**
-1. `cbr_k`**: crude birth rate in** `area` **in thousands**
-
-#### Read in the data
-
-```{r}
-q03_data <- readr::read_csv("data/q03_data.csv")
-```
-
-#### Compute the person-years lived in the denominator of the crude birth rate
-
-**Using the data available in** `q03_data`**, calculate the number of person-years in the denominator of the crude birth rate for each area, appending it as a new column called** `person_years` **and displaying the altered table.**
-
-* **0.5 points for getting the steps mostly right**
-* **0.5 points for getting the right numerical answers.**
-
-**Total available: 1 point**
-
-```{r}
-
-```
-
-## Question set 4
-
-### Data collection
-
-#### About the data
-
-**These questions are about the employee data we used in week 1. There, we used the data to demonstrate (1) the analogy between all-cause employee termination and death processes, and (2) the flexibility of exact person-year data. I've augmented this data set with fictitious hire dates, dates of first promotion (if any), dates of second promotion (if any), and dates of termination (if any). You'll use these dates to define cohorts.**
-
-**The data has the following structure:**
-
-1. `id`**: an identifier for an employee represented by a row of data**
-1. `hire_date`**: the date that employee** `id` **was hired**
-1. `promo1_date`**: the date that employee** `id` **got their first promotion, if they ever did;** `NA` **otherwise**
-1. `promo2_date`**: the date that employee** `id` **got their second promotion, if they ever did;** `NA` **otherwise (will always be** `NA` **if the employee never got their first promotion.**
-1. `termination_date`**: date that employee** `id` **left the company, if they ever did;** `NA` **otherwise**
-
-#### Read in the data
-
-```{r}
-q04_data <- readr::read_csv("data/q04_data.csv")
-```
-
-**VERY IMPORTANT NOTE: When analyzing this data, 
-
-#### Calculate hiring cohorts
-
-**Using this data and pretending like the current date is `r max(q04_data$termination_date, na.rm = TRUE) + 1` (HINT: this important for understand whether someone is eligible to be included in the denominator of a probability), compute the distribution of CURRENT employees by hire year cohort, both in terms of employee headcount and share of total headcount (formatted as percent to nearest tenth of a percent). Output the result as a table and comment briefly (1-3 sentences) on the results.**
-
-* **0.125 points for getting the steps mostly right**
-* **0.25 points for getting the right numerical answers**
-* **0.125 points for a well-reasoned summary of the results**
-
-```{r}
-
-```
-
-**Commentary below:**
-
-
-**Compute the distribution of CURRENT employees by hire month, both in terms of employee headcount and share of total headcount (formatted as percent to nearest tenth of a percent). Output the result as a table and comment briefly (3-5 sentences) on the results, including whether these hire month counts represent cohorts and if so how.**
-
-* **0.125 points for getting the steps mostly right**
-* **0.25 points for getting the right numerical answers**
-* **0.125 points for a well-reasoned summary of the results**
-
-```{r}
-
-```
-
-**Commentary below:**
-
-
-
-**TIP: You may find it useful to convert dates to** `character` **and then taking sub-strings to grab years from dates. Or you could use a package like** `lubridate` **instead. I'll allow it.**
-
-**Total available: 1 point**
-
-## Question 5
-
-**Using the same data from question 4, calculate for each hire year cohort the probability of first promotion within 180 days. Output the result in a table. BE CAREFUL DEFINING THE DENOMINATOR AND NOTE THE ABSENCE OF A CRUCIAL WORD DEFINING THE COHORT COMPARED TO QUESTION 4!**
-
-* **0.4 points for getting the steps mostly right.**
-* **0.4 points for getting numerically accurate answers.**
-
-```{r}
-
-```
-
-
-**Now use the data from question 4 to calculate for each first-promotion year cohort the probability of getting a second-promotion within 180 days. Again, careful defining the denominator.**
-
-* **0.4 points for getting the steps mostly right.**
-* **0.4 points for getting numerically accurate answers.**
-
-```{r}
-
-```
-
-**Explain in 1-3 sentences why it doesn't make sense to take the probability of leaving the company across the entire data set without considering the beginning and end points of the cohort observation window.**
-
-* **0.4 points**
-
-**Commentary below:**
-
-
-
-**Total available: 2 points**
-
-## Question set 6
-
-### Data collection
-
-#### About the data
-
-**For this question, you will use data from the Human Mortality Database on age-specific mortality for five-year age groups (with an 80+ open age group) in Slovenia in 1988. The data has the following structure:**
-
-1. `age`**: the starting age for the age group represented by the row**
-1. `deaths`**: number of deaths in the age group in 1988**
-1. `exposure`**: person-years of exposure to the risk of death in the age group in 1988**
-
-#### Read in the data
-
-```{r}
-q06_data <- readr::read_csv("data/q06_data.csv")
-```
-
-#### Compute age-specific mortality rates
-
-**Using this data, compute the age-specific mortality rates (ASMRs) and proportion of person-years lived ($C_i$) for each age group and output the table with the appended columns below.**
-
-**0.5 points for getting the right numerical answers.**
-
-```{r}
-
-```
-
-#### Compute the crude death rate as a function of ASMRs and age structure
-
-**Using the calculations from above, calculate the crude death rate as a function of the ASMRs and age structure (NOT BY AGGREGATING DEATH COUNTS AND PERSON-YEARS).**
-
-* **0.25 points for showing the proper steps.**
-* **0.25 points for getting the right numerical answer in a full sentence below the code.**
-
-```{r}
-
-```
-
-**Commentary here:**
-
-**Total available: 1 point**
+### Calculate the age-standardized crude customer conversion rate using the main website as a standard
