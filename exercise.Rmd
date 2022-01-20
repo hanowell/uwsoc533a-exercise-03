@@ -2,7 +2,11 @@
 title: "Exercise 2"
 author: '[Your first name] [Your last name]'
 date: "`r Sys.Date()`"
-output: html_document
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 3
 ---
 
 ## Setup
@@ -61,7 +65,7 @@ $$
 
 **Lastly, if you'd like to read a prettily-formatted version of these instructions, open up the `exercise.html` file in the exercise folder.**
 
-## Question set 1: Age-standardized crude death rates
+## Question set 1
 
 ### Data collection
 
@@ -77,14 +81,7 @@ $$
 1. `cx`**: The average proportion of population between ages** [`x`, `x + n`) **over the five-year period**
 
 ```{r asmr_by_income, warning=FALSE, message=FALSE}
-asmr_by_income <- readRDS("data/unpp19.rds") %>%
-  dplyr::filter(
-    location %in% c("Low-income countries", "High-income countries"),
-    period == "2015-2020"
-  ) %>%
-  dplyr::rename(income_level = location) %>%
-  dplyr::mutate(cx = Lx / Tx[x==0]) %>%
-  dplyr::select(income_level, x, n, mx, cx)
+q01_data <- readRDS("data/q01_data.rds")
 ```
 
 ### Calculate the crude death rate (CDR) by income level
@@ -119,10 +116,40 @@ asmr_by_income <- readRDS("data/unpp19.rds") %>%
 
 
 
-## Question set 2: Channel-standardized customer conversion rates
+## Question set 2
 
 ### Data collection
 
 ### Calculate the crude customer conversion rate for each website
 
-### Calculate the age-standardized crude customer conversion rate using the main website as a standard
+### Calculate the channel-standardized crude customer conversion rate using the main website as a standard
+
+## Question set 3
+
+### Decompose the difference in CDR between low- and high-income countries into its age-specific components
+
+### Calculate the total contribution of mortality rate schedule and age structure differences to the CDR difference
+
+## Question 4
+
+### Decompose the difference in crude customer conversion rate between main and partner website into its channel-specific components
+
+### Calculate the total contribution of conversion rate schedule and channel structure differences to the overall crude conversion rate difference
+
+## Question 5
+
+### Find the occurrences for a cohort age-specific period rate
+
+### Find the starting line for a cohort
+
+## Question 6
+
+### Explain whether or not you can find the cohort age-specific probability of death from these population counts
+
+### Do it again for another example
+
+## Question 7
+
+### Data collection
+
+### Calculate the tenure-specific probability of promotion in the first half of the second year of employment

@@ -139,3 +139,4 @@ asmr_by_income <-
 
 q01_data <- asmr_by_income %>%
   dplyr::left_join(popstruct_by_income)
+saveRDS(q01_data, "data/q01_data.rds")
