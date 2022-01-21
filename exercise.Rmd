@@ -1,5 +1,5 @@
 ---
-title: "Exercise 2"
+title: "Exercise 3"
 author: '[Your first name] [Your last name]'
 date: "`r Sys.Date()`"
 output:
