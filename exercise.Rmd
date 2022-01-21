@@ -4,12 +4,13 @@ author: '[Your first name] [Your last name]'
 date: "`r Sys.Date()`"
 output:
   html_document:
+    number_sections: true
     toc: true
     toc_float: true
     toc_depth: 3
 ---
 
-## Setup
+# Setup {.unnumbered}
 
 **Install the packages you'll need for this assignment if you haven't already.**
 
@@ -22,7 +23,7 @@ pacman::p_load(dplyr, knitr, kableExtra, readr)
 
 **Replace the bracketed placeholders for the `Author` in the YAML header with your actual first and last name.**
 
-## Instructions
+# Instructions {.unnumbered}
 
 **Each question contains instructions in bold, as you see here. Your responses should be in plain text, as below:**
 
@@ -65,91 +66,244 @@ $$
 
 **Lastly, if you'd like to read a prettily-formatted version of these instructions, open up the `exercise.html` file in the exercise folder.**
 
-## Question set 1
+# Question set 1
 
-### Data collection
+**Total available: 1 point**
 
-**For this section, we'll use the age-specific mortality rate schedule and population structure of high-income and low-income countries, respectively, for the period between 2015 and 2020. The data comes from World Population Prospects 2019 reported by the United Nations Population Division. The income designations are based on World Bank income groups.**
+## Data collection
 
-**The original data sources are here:** https://population.un.org/wpp/Download/Standard/Mortality/
+**For this section, we'll use the age-specific mortality rate schedule and population structure of high-income and low-income countries, respectively, for the period between 2015 and 2020. The data comes from World Population Prospects 2019 reported by the United Nations Population Division. The income-level designations are based on World Bank income groups.**
+
+**The original data sources are linked below:**
+
+* **World Population Prospects mortality data:**
+  
+  https://population.un.org/wpp/Download/Standard/Mortality/
+  
+* **World Population Prospects population size data:**
+
+  https://population.un.org/wpp/Download/Standard/Population/
 
 **The data has one row per income level and age group (with the same age groups represented for each income level), and three columns:**
 
 1. `income_level %in% c("Low-income countries", "High-income countries)`**: The World Bank income level for which the life table was calculated**
 1. `x`**: The exact age at the beginning of the age interval**
-1. `mx`**: The age-specific mortality rate for age interval** [`x`, `x + n`)
-1. `cx`**: The average proportion of population between ages** [`x`, `x + n`) **over the five-year period**
+1. `mx`**: The age-specific mortality rate for age interval** [`x`, `x` + $n$)**, where $n$ is the length of the age interval**
+1. `cx`**: The average proportion of population between ages** [`x`, `x` + $n$) **over the five-year period**
 
-```{r asmr_by_income, warning=FALSE, message=FALSE}
+```{r q01_data, warning=FALSE, message=FALSE}
 q01_data <- readRDS("data/q01_data.rds")
 ```
 
-### Calculate the crude death rate (CDR) by income level
+## Calculate the crude death rate (CDR) by income level
 
-**Using only the age-specific mortality rates `mx` and age structure** `cx`**, compute the CDR by income level and report it below as a table with the following structure:**
+**Using only the age-specific mortality rates** `mx` **and age structure** `cx`**, compute the CDR by income level and report it below as a table with the following structure (0.25 points for numerically accurate answers):**
 
-* `income_level`: The income level
-* `cdr`: The CDR
+* `income_level`**: The income level**
+* `cdr`**: The CDR of deaths per 1000 person-years, with one significant digit**
 
 ```{r}
 
 ```
 
-**Report the difference between the low-income and high-income CDRs below in a full sentence and comment on the finding in another sentence.**
+**Below, report in a few sentences the difference between the low-income and high-income CDRs. Your response should reference what you can glean from a comparison of the age-specific mortality rates and age structures of these two populations. (0.125 points for numerically accurate answer; 0.125 points for well-reasoned, factually accurate explanation)**
 
 
+**Sub-total available: 0.5 points**
 
-### Calculate the age-standardized CDR by income level
+## Calculate the age-standardized CDR by income level
 
 **Compute the age-standardized CDR by income level using three standards:**
 
 1. **High-income countries standard**
-1. **Low-income contries standard**
+1. **Low-income countries standard**
 1. **Standard constructed from the average of high-income and low-income countries**
 
-**Report the results in a table below with the following structure:**
+**Report the results in a table below with the following structure (0.25 points for numerically accurate answer):**
 
 1. `income_level`**: The income level**
 1. `cdr_[high/low/avg]`**: three columns, one for each of the standards indicated above and in the placeholder brackets (e.g.,** `cdr_high`**)**
 
-**Comment on the results in a brief paragraph below. If you like, create plots or tables referencing the components of the original dataset to help explain the results. But words can suffice.**
+```{r}
+
+```
+
+**Comment on the results in a brief paragraph below. If you like, create plots or tables to help explain the results. But words can suffice. (0.25 points for a well-reasoned explanation)**
+
+**Sub-total available: 0.5 points**
+
+# Question set 2
+
+**Total available: 1 point**
+
+## Data collection
+
+**In this question, we'll use a fictitious data set of the rate at which visitors to a company's main and partner websites become that company's customers (i.e., make a purchase through the company). Website visitors who fill out a form state how they heard about the company, which the company ties to one of five marketing channels: TV, radio, podcast, paid web search (i.e., through Google ad), or organic web search (i.e., through web search results).**
+
+**The data contains one row per website-channel pair, and the following columns:**
+
+* `website %in% c("main", "partner")`**: The website associated with the customer conversion rate**
+* `channel %in% c("TV", "radio", "podcast", "paid search", "organic search")`**: The marketing channel associated with the customer conversion rate**
+* `rate`**: The customer conversion rate for the** `website`**-**`channel` **pair**
+* `cx`**: The proportion of visitor-months associated with a given** `website`**-**`channel` **pair; sums to one within each** `website`
+
+```{r q02_data, warning=FALSE, message=FALSE}
+q02_data <- readRDS("data/q02_data.rds")
+```
+
+## Problem
+
+**One of the company's vice presidents (VP) started a partner website, and its customer conversion rate is lower than the company's main website. The VP claims it's because the company hasn't invested enough in the partner website's search engine optimization, which would bring more organic search traffic, where the partner website's conversion rate is** `r round(q02_data[[10, "rate"]], 2)` **per visitor-month compared to the main website's conversion rate of** `r round(q02_data[[5, "rate"]], 2)` **per visitor-month. The VP figures this must be the reason, because each website spends the same amount of money on all other marketing channels. Another VP thinks the web form the partner website uses turns people away by making it look like they will give them a price quote, but not in fact giving any price quotes.**
+
+**You get the bright idea to standardize the customer conversion rates to the same channel mix to remove the impact of marketing-channel mix.**
+
+**This is a fictionalization of an argument between VPs I once helped to resolve, and this class is where how I learned how to do it.**
+
+## Calculate the crude customer conversion (CCR) rate for each website
+
+**Using only the rates and market channel shares, compute the CCR for each website and output it in a table with the following structure:**
+
+* `website`**: The income level**
+* `ccr`**: The CCR of conversions per customer-month, rounded to two significant digits**
+
+```{r}
+
+```
+
+**Sub-total available: 0.25 points for numerically accurate answer**
+
+## Calculate the channel-standardized CCR using the main website as a standard
+
+**Append the adjusted CCR (rounded to two significant digits) as a column called** `ccr_adj` **to the end of the table you constructed above and report it below:**
+
+```{r}
+
+```
+
+**Sub-total available: 0.5 points for numerically accurate answer**
+
+## Advise the VPs
+
+**Based on your results, and on your viewing of the channel-specific rates and shares, is a lack of paid search investment to blame for the partner website's poor conversion performance? Explain (with tables or graphs if you like, but words will suffice) in few sentences below.**
+
+
+**Sub-total available: 0.25 points**
+
+# Question set 3
+
+**Total available: 2 points**
+
+## Age-specific difference contributions
+
+**Using the data set from [Question set 1], calculate the age-specific contributions of mortality rate schedule and age structure to the difference in CDR between low- and high-income countries.**
+
+**In a table below, report the top three age-specific contributions of mortality rate schedule in terms of absolute value of contribution, sorted in order of decreasing absolute value. The table should have the following structure: (0.5 points for numerically accurate answer)**
+
+* `x`**: the starting age of the age group**
+* `rate_contrib`**: the signed value of the age-specific rate schedule contribution to the CDR difference**
+* `abs_rate_contrib`**: absolute value of** `rate_contrib`
+
+```{r}
+
+```
+
+**In a table below, report the top three age-specific contributions of age structure in terms of absolute value of contribution, sorted in order of decreasing absolute value. The table should have the following structure: (0.5 points for numerically accurate answer)**
+
+* `x`**: the starting age of the age group**
+* `struct_contrib`**: the signed value of the age-specific age structure contribution to the CDR difference**
+* `abs_struct_contrib`**: absolute value of** `struct_contrib`
+
+```{r}
+
+```
+
+**Sub-total available: 1 point**
+
+## Total rate schedule and age structure contributions
+
+**In a few sentences below, report:**
+
+* **The total mortality rate schedule effect on the CDR difference between low- and high-income countries (0.25 points for numerically accurate answer)**
+* **The total age structure effect (0.25 points for numerically accurate answer)**
+* **Your interpretation of these results (0.5 points for well-reasoned interpretation)**
+
+**Sub-total available: 1 point**
+
+# Question set 4
+
+**Total available: 1 point**
+
+**One of the VPS from [Question set 2] wants to know the contribution of conversion rate schedules vs. marketing channel mix to difference between the main and partner website CCRs.**
+
+## Channel-specific difference contributions
+
+**Below, construct a table containing the channel-specific contributions of rate schedules and marketing channel mix. The table should have the following columns:**
+
+* `channel`
+* `rate_contrib`**: channel-specific contribution of the rate**
+* `channel_contrib`**: channel-specific contribution of the channel share**
+
+```{r}
+
+```
+
+**Sub-total available: 0.5 points for numerically accurate answers**
+
+## Total rate schedule and channel structure contributions
+
+**Below, construct a sentence reporting the total rate schedule and channel structure contributions to the difference between the main and partner websites' CCRs. Follow up with a sentence or two interpreting the results.**
+
+
+**Sub-total available: 0.5 points**
+
+# Question set 5
+
+**Total possible: 1 point**
+
+## Data collection
+
+**For this problem, we return to the employee dataset from Exercise 2.**
+
+```{r q05_data, warning=FALSE, message=FALSE}
+q05_data <- readRDS("data/q05_data.rds")
+```
+
+## Age-specific termination probability
+
+**For the oldest hire-year cohort, calculate the probability of termination within 30 days following 360 days of continuous employment (i.e. ${}_{30}q_{360}$). Sub-total: 0.5 points for numerically accurate response**
+
+```{r}
+
+```
+
+## Age-specific promotion probability
+
+**For the oldest hire-year cohort, calculate the probability of being promoted within 60 days of your 360^th^ day of employment. Sub-total: 0.5 points for numerically accurate response**
+
+# Question set 6
+
+**Total available: 1 point**
+
+## Data collection
+
+**Pretend you're an analyst working at an aerospace engineering company. Your boss sends you a data set and tells you to calculate the probability that a jet engine component that was manufactured in 2019 failed within a year.**
+
+**The data has the following structure:**
+
+* `year`**: The calendar year in question**
+* `manufactured`**: The number of parts manufactured that year**
+* `failed`**: The number of parts that failed that year**
+
+```{r}
+q06_data <- readRDS("data/q06_data.rds")
+q06_data
+```
+
+## Bear the bad news
+
+**Using the notation that we learned in class, explain below to your boss what information is missing from this data set but that is needed to complete the task. (0.5 points)**
 
 
 
-## Question set 2
+**Your boss says, "But just divide the parts that failed in 2019 by the parts manufactured in 2019. Should be close, right?" Below, explain to your boss why that's not quite right. (0.5 points)**
 
-### Data collection
-
-### Calculate the crude customer conversion rate for each website
-
-### Calculate the channel-standardized crude customer conversion rate using the main website as a standard
-
-## Question set 3
-
-### Decompose the difference in CDR between low- and high-income countries into its age-specific components
-
-### Calculate the total contribution of mortality rate schedule and age structure differences to the CDR difference
-
-## Question 4
-
-### Decompose the difference in crude customer conversion rate between main and partner website into its channel-specific components
-
-### Calculate the total contribution of conversion rate schedule and channel structure differences to the overall crude conversion rate difference
-
-## Question 5
-
-### Find the occurrences for a cohort age-specific period rate
-
-### Find the starting line for a cohort
-
-## Question 6
-
-### Explain whether or not you can find the cohort age-specific probability of death from these population counts
-
-### Do it again for another example
-
-## Question 7
-
-### Data collection
-
-### Calculate the tenure-specific probability of promotion in the first half of the second year of employment

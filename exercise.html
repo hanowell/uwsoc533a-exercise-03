@@ -11,7 +11,7 @@
 
 <meta name="author" content="[Your first name] [Your last name]" />
 
-<meta name="date" content="2022-01-19" />
+<meta name="date" content="2022-01-20" />
 
 <title>Exercise 2</title>
 
@@ -245,13 +245,13 @@ div.tocify {
 
 <h1 class="title toc-ignore">Exercise 2</h1>
 <h4 class="author">[Your first name] [Your last name]</h4>
-<h4 class="date">2022-01-19</h4>
+<h4 class="date">2022-01-20</h4>
 
 </div>
 
 
-<div id="setup" class="section level2">
-<h2>Setup</h2>
+<div id="setup" class="section level1 unnumbered">
+<h1 class="unnumbered">Setup</h1>
 <p><strong>Install the packages you’ll need for this assignment if you haven’t already.</strong></p>
 <pre class="r"><code># Install pacman
 if (!require(&quot;pacman&quot;)) install.packages(&quot;pacman&quot;)</code></pre>
@@ -260,8 +260,8 @@ if (!require(&quot;pacman&quot;)) install.packages(&quot;pacman&quot;)</code></p
 pacman::p_load(dplyr, knitr, kableExtra, readr)</code></pre>
 <p><strong>Replace the bracketed placeholders for the <code>Author</code> in the YAML header with your actual first and last name.</strong></p>
 </div>
-<div id="instructions" class="section level2">
-<h2>Instructions</h2>
+<div id="instructions" class="section level1 unnumbered">
+<h1 class="unnumbered">Instructions</h1>
 <p><strong>Each question contains instructions in bold, as you see here. Your responses should be in plain text, as below:</strong></p>
 <p>Hey! Don’t put your answers in bold text, please! Thanks!</p>
 <p><strong>There are code blocks like the one below, which you will be instructed to fill in with code to calculate the quantities necessary to answer the question.</strong></p>
@@ -333,101 +333,189 @@ z = y^2
 \]</span></p>
 <p><strong>Lastly, if you’d like to read a prettily-formatted version of these instructions, open up the <code>exercise.html</code> file in the exercise folder.</strong></p>
 </div>
-<div id="question-set-1" class="section level2">
-<h2>Question set 1</h2>
-<div id="data-collection" class="section level3">
-<h3>Data collection</h3>
-<p><strong>For this section, we’ll use the age-specific mortality rate schedule and population structure of high-income and low-income countries, respectively, for the period between 2015 and 2020. The data comes from World Population Prospects 2019 reported by the United Nations Population Division. The income designations are based on World Bank income groups.</strong></p>
-<p><strong>The original data sources are here:</strong> <a href="https://population.un.org/wpp/Download/Standard/Mortality/" class="uri">https://population.un.org/wpp/Download/Standard/Mortality/</a></p>
+<div id="question-set-1" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Question set 1</h1>
+<p><strong>Total available: 1 point</strong></p>
+<div id="data-collection" class="section level2" number="1.1">
+<h2><span class="header-section-number">1.1</span> Data collection</h2>
+<p><strong>For this section, we’ll use the age-specific mortality rate schedule and population structure of high-income and low-income countries, respectively, for the period between 2015 and 2020. The data comes from World Population Prospects 2019 reported by the United Nations Population Division. The income-level designations are based on World Bank income groups.</strong></p>
+<p><strong>The original data sources are linked below:</strong></p>
+<ul>
+<li><p><strong>World Population Prospects mortality data:</strong></p>
+<p><a href="https://population.un.org/wpp/Download/Standard/Mortality/" class="uri">https://population.un.org/wpp/Download/Standard/Mortality/</a></p></li>
+<li><p><strong>World Population Prospects population size data:</strong></p>
+<p><a href="https://population.un.org/wpp/Download/Standard/Population/" class="uri">https://population.un.org/wpp/Download/Standard/Population/</a></p></li>
+</ul>
 <p><strong>The data has one row per income level and age group (with the same age groups represented for each income level), and three columns:</strong></p>
 <ol style="list-style-type: decimal">
 <li><code>income_level %in% c(&quot;Low-income countries&quot;, &quot;High-income countries)</code><strong>: The World Bank income level for which the life table was calculated</strong></li>
 <li><code>x</code><strong>: The exact age at the beginning of the age interval</strong></li>
-<li><code>mx</code><strong>: The age-specific mortality rate for age interval</strong> [<code>x</code>, <code>x + n</code>)</li>
-<li><code>cx</code><strong>: The average proportion of population between ages</strong> [<code>x</code>, <code>x + n</code>) <strong>over the five-year period</strong></li>
+<li><code>mx</code><strong>: The age-specific mortality rate for age interval</strong> [<code>x</code>, <code>x</code> + <span class="math inline">\(n\)</span>)<strong>, where <span class="math inline">\(n\)</span> is the length of the age interval</strong></li>
+<li><code>cx</code><strong>: The average proportion of population between ages</strong> [<code>x</code>, <code>x</code> + <span class="math inline">\(n\)</span>) <strong>over the five-year period</strong></li>
 </ol>
 <pre class="r"><code>q01_data &lt;- readRDS(&quot;data/q01_data.rds&quot;)</code></pre>
 </div>
-<div id="calculate-the-crude-death-rate-cdr-by-income-level" class="section level3">
-<h3>Calculate the crude death rate (CDR) by income level</h3>
-<p><strong>Using only the age-specific mortality rates <code>mx</code> and age structure</strong> <code>cx</code><strong>, compute the CDR by income level and report it below as a table with the following structure:</strong></p>
+<div id="calculate-the-crude-death-rate-cdr-by-income-level" class="section level2" number="1.2">
+<h2><span class="header-section-number">1.2</span> Calculate the crude death rate (CDR) by income level</h2>
+<p><strong>Using only the age-specific mortality rates</strong> <code>mx</code> <strong>and age structure</strong> <code>cx</code><strong>, compute the CDR by income level and report it below as a table with the following structure (0.25 points for numerically accurate answers):</strong></p>
 <ul>
-<li><code>income_level</code>: The income level</li>
-<li><code>cdr</code>: The CDR</li>
+<li><code>income_level</code><strong>: The income level</strong></li>
+<li><code>cdr</code><strong>: The CDR of deaths per 1000 person-years, with one significant digit</strong></li>
 </ul>
-<p><strong>Report the difference between the low-income and high-income CDRs below in a full sentence and comment on the finding in another sentence.</strong></p>
+<p><strong>Below, report in a few sentences the difference between the low-income and high-income CDRs. Your response should reference what you can glean from a comparison of the age-specific mortality rates and age structures of these two populations. (0.125 points for numerically accurate answer; 0.125 points for well-reasoned, factually accurate explanation)</strong></p>
+<p><strong>Sub-total available: 0.5 points</strong></p>
 </div>
-<div id="calculate-the-age-standardized-cdr-by-income-level" class="section level3">
-<h3>Calculate the age-standardized CDR by income level</h3>
+<div id="calculate-the-age-standardized-cdr-by-income-level" class="section level2" number="1.3">
+<h2><span class="header-section-number">1.3</span> Calculate the age-standardized CDR by income level</h2>
 <p><strong>Compute the age-standardized CDR by income level using three standards:</strong></p>
 <ol style="list-style-type: decimal">
 <li><strong>High-income countries standard</strong></li>
-<li><strong>Low-income contries standard</strong></li>
+<li><strong>Low-income countries standard</strong></li>
 <li><strong>Standard constructed from the average of high-income and low-income countries</strong></li>
 </ol>
-<p><strong>Report the results in a table below with the following structure:</strong></p>
+<p><strong>Report the results in a table below with the following structure (0.25 points for numerically accurate answer):</strong></p>
 <ol style="list-style-type: decimal">
 <li><code>income_level</code><strong>: The income level</strong></li>
 <li><code>cdr_[high/low/avg]</code><strong>: three columns, one for each of the standards indicated above and in the placeholder brackets (e.g.,</strong> <code>cdr_high</code><strong>)</strong></li>
 </ol>
-<p><strong>Comment on the results in a brief paragraph below. If you like, create plots or tables referencing the components of the original dataset to help explain the results. But words can suffice.</strong></p>
+<p><strong>Comment on the results in a brief paragraph below. If you like, create plots or tables to help explain the results. But words can suffice. (0.25 points for a well-reasoned explanation)</strong></p>
+<p><strong>Sub-total available: 0.5 points</strong></p>
 </div>
 </div>
-<div id="question-set-2" class="section level2">
-<h2>Question set 2</h2>
-<div id="data-collection-1" class="section level3">
-<h3>Data collection</h3>
+<div id="question-set-2" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Question set 2</h1>
+<p><strong>Total available: 1 point</strong></p>
+<div id="data-collection-1" class="section level2" number="2.1">
+<h2><span class="header-section-number">2.1</span> Data collection</h2>
+<p><strong>In this question, we’ll use a fictitious data set of the rate at which visitors to a company’s main and partner websites become that company’s customers (i.e., make a purchase through the company). Website visitors who fill out a form state how they heard about the company, which the company ties to one of five marketing channels: TV, radio, podcast, paid web search (i.e., through Google ad), or organic web search (i.e., through web search results).</strong></p>
+<p><strong>The data contains one row per website-channel pair, and the following columns:</strong></p>
+<ul>
+<li><code>website %in% c(&quot;main&quot;, &quot;partner&quot;)</code><strong>: The website associated with the customer conversion rate</strong></li>
+<li><code>channel %in% c(&quot;TV&quot;, &quot;radio&quot;, &quot;podcast&quot;, &quot;paid search&quot;, &quot;organic search&quot;)</code><strong>: The marketing channel associated with the customer conversion rate</strong></li>
+<li><code>rate</code><strong>: The customer conversion rate for the</strong> <code>website</code><strong>-</strong><code>channel</code> <strong>pair</strong></li>
+<li><code>cx</code><strong>: The proportion of visitor-months associated with a given</strong> <code>website</code><strong>-</strong><code>channel</code> <strong>pair; sums to one within each</strong> <code>website</code></li>
+</ul>
+<pre class="r"><code>q02_data &lt;- readRDS(&quot;data/q02_data.rds&quot;)</code></pre>
 </div>
-<div id="calculate-the-crude-customer-conversion-rate-for-each-website" class="section level3">
-<h3>Calculate the crude customer conversion rate for each website</h3>
+<div id="problem" class="section level2" number="2.2">
+<h2><span class="header-section-number">2.2</span> Problem</h2>
+<p><strong>One of the company’s vice presidents (VP) started a partner website, and its customer conversion rate is lower than the company’s main website. The VP claims it’s because the company hasn’t invested enough in the partner website’s search engine optimization, which would bring more organic search traffic, where the partner website’s conversion rate is</strong> 0.52 <strong>per visitor-month compared to the main website’s conversion rate of</strong> 0.45 <strong>per visitor-month. The VP figures this must be the reason, because each website spends the same amount of money on all other marketing channels. Another VP thinks the web form the partner website uses turns people away by making it look like they will give them a price quote, but not in fact giving any price quotes.</strong></p>
+<p><strong>You get the bright idea to standardize the customer conversion rates to the same channel mix to remove the impact of marketing-channel mix.</strong></p>
+<p><strong>This is a fictionalization of an argument between VPs I once helped to resolve, and this class is where how I learned how to do it.</strong></p>
 </div>
-<div id="calculate-the-channel-standardized-crude-customer-conversion-rate-using-the-main-website-as-a-standard" class="section level3">
-<h3>Calculate the channel-standardized crude customer conversion rate using the main website as a standard</h3>
+<div id="calculate-the-crude-customer-conversion-ccr-rate-for-each-website" class="section level2" number="2.3">
+<h2><span class="header-section-number">2.3</span> Calculate the crude customer conversion (CCR) rate for each website</h2>
+<p><strong>Using only the rates and market channel shares, compute the CCR for each website and output it in a table with the following structure:</strong></p>
+<ul>
+<li><code>website</code><strong>: The income level</strong></li>
+<li><code>ccr</code><strong>: The CCR of conversions per customer-month, rounded to two significant digits</strong></li>
+</ul>
+<p><strong>Sub-total available: 0.25 points for numerically accurate answer</strong></p>
 </div>
+<div id="calculate-the-channel-standardized-ccr-using-the-main-website-as-a-standard" class="section level2" number="2.4">
+<h2><span class="header-section-number">2.4</span> Calculate the channel-standardized CCR using the main website as a standard</h2>
+<p><strong>Append the adjusted CCR (rounded to two significant digits) as a column called</strong> <code>ccr_adj</code> <strong>to the end of the table you constructed above and report it below:</strong></p>
+<p><strong>Sub-total available: 0.5 points for numerically accurate answer</strong></p>
 </div>
-<div id="question-set-3" class="section level2">
-<h2>Question set 3</h2>
-<div id="decompose-the-difference-in-cdr-between-low--and-high-income-countries-into-its-age-specific-components" class="section level3">
-<h3>Decompose the difference in CDR between low- and high-income countries into its age-specific components</h3>
-</div>
-<div id="calculate-the-total-contribution-of-mortality-rate-schedule-and-age-structure-differences-to-the-cdr-difference" class="section level3">
-<h3>Calculate the total contribution of mortality rate schedule and age structure differences to the CDR difference</h3>
-</div>
-</div>
-<div id="question-4" class="section level2">
-<h2>Question 4</h2>
-<div id="decompose-the-difference-in-crude-customer-conversion-rate-between-main-and-partner-website-into-its-channel-specific-components" class="section level3">
-<h3>Decompose the difference in crude customer conversion rate between main and partner website into its channel-specific components</h3>
-</div>
-<div id="calculate-the-total-contribution-of-conversion-rate-schedule-and-channel-structure-differences-to-the-overall-crude-conversion-rate-difference" class="section level3">
-<h3>Calculate the total contribution of conversion rate schedule and channel structure differences to the overall crude conversion rate difference</h3>
-</div>
-</div>
-<div id="question-5" class="section level2">
-<h2>Question 5</h2>
-<div id="find-the-occurrences-for-a-cohort-age-specific-period-rate" class="section level3">
-<h3>Find the occurrences for a cohort age-specific period rate</h3>
-</div>
-<div id="find-the-starting-line-for-a-cohort" class="section level3">
-<h3>Find the starting line for a cohort</h3>
-</div>
-</div>
-<div id="question-6" class="section level2">
-<h2>Question 6</h2>
-<div id="explain-whether-or-not-you-can-find-the-cohort-age-specific-probability-of-death-from-these-population-counts" class="section level3">
-<h3>Explain whether or not you can find the cohort age-specific probability of death from these population counts</h3>
-</div>
-<div id="do-it-again-for-another-example" class="section level3">
-<h3>Do it again for another example</h3>
+<div id="advise-the-vps" class="section level2" number="2.5">
+<h2><span class="header-section-number">2.5</span> Advise the VPs</h2>
+<p><strong>Based on your results, and on your viewing of the channel-specific rates and shares, is a lack of paid search investment to blame for the partner website’s poor conversion performance? Explain (with tables or graphs if you like, but words will suffice) in few sentences below.</strong></p>
+<p><strong>Sub-total available: 0.25 points</strong></p>
 </div>
 </div>
-<div id="question-7" class="section level2">
-<h2>Question 7</h2>
-<div id="data-collection-2" class="section level3">
-<h3>Data collection</h3>
+<div id="question-set-3" class="section level1" number="3">
+<h1><span class="header-section-number">3</span> Question set 3</h1>
+<p><strong>Total available: 2 points</strong></p>
+<div id="age-specific-difference-contributions" class="section level2" number="3.1">
+<h2><span class="header-section-number">3.1</span> Age-specific difference contributions</h2>
+<p><strong>Using the data set from <a href="#question-set-1">Question set 1</a>, calculate the age-specific contributions of mortality rate schedule and age structure to the difference in CDR between low- and high-income countries.</strong></p>
+<p><strong>In a table below, report the top three age-specific contributions of mortality rate schedule in terms of absolute value of contribution, sorted in order of decreasing absolute value. The table should have the following structure: (0.5 points for numerically accurate answer)</strong></p>
+<ul>
+<li><code>x</code><strong>: the starting age of the age group</strong></li>
+<li><code>rate_contrib</code><strong>: the signed value of the age-specific rate schedule contribution to the CDR difference</strong></li>
+<li><code>abs_rate_contrib</code><strong>: absolute value of</strong> <code>rate_contrib</code></li>
+</ul>
+<p><strong>In a table below, report the top three age-specific contributions of age structure in terms of absolute value of contribution, sorted in order of decreasing absolute value. The table should have the following structure: (0.5 points for numerically accurate answer)</strong></p>
+<ul>
+<li><code>x</code><strong>: the starting age of the age group</strong></li>
+<li><code>struct_contrib</code><strong>: the signed value of the age-specific age structure contribution to the CDR difference</strong></li>
+<li><code>abs_struct_contrib</code><strong>: absolute value of</strong> <code>struct_contrib</code></li>
+</ul>
+<p><strong>Sub-total available: 1 point</strong></p>
 </div>
-<div id="calculate-the-tenure-specific-probability-of-promotion-in-the-first-half-of-the-second-year-of-employment" class="section level3">
-<h3>Calculate the tenure-specific probability of promotion in the first half of the second year of employment</h3>
+<div id="total-rate-schedule-and-age-structure-contributions" class="section level2" number="3.2">
+<h2><span class="header-section-number">3.2</span> Total rate schedule and age structure contributions</h2>
+<p><strong>In a few sentences below, report:</strong></p>
+<ul>
+<li><strong>The total mortality rate schedule effect on the CDR difference between low- and high-income countries (0.25 points for numerically accurate answer)</strong></li>
+<li><strong>The total age structure effect (0.25 points for numerically accurate answer)</strong></li>
+<li><strong>Your interpretation of these results (0.5 points for well-reasoned interpretation)</strong></li>
+</ul>
+<p><strong>Sub-total available: 1 point</strong></p>
+</div>
+</div>
+<div id="question-set-4" class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Question set 4</h1>
+<p><strong>Total available: 1 point</strong></p>
+<p><strong>One of the VPS from <a href="#question-set-2">Question set 2</a> wants to know the contribution of conversion rate schedules vs. marketing channel mix to difference between the main and partner website CCRs.</strong></p>
+<div id="channel-specific-difference-contributions" class="section level2" number="4.1">
+<h2><span class="header-section-number">4.1</span> Channel-specific difference contributions</h2>
+<p><strong>Below, construct a table containing the channel-specific contributions of rate schedules and marketing channel mix. The table should have the following columns:</strong></p>
+<ul>
+<li><code>channel</code></li>
+<li><code>rate_contrib</code><strong>: channel-specific contribution of the rate</strong></li>
+<li><code>channel_contrib</code><strong>: channel-specific contribution of the channel share</strong></li>
+</ul>
+<p><strong>Sub-total available: 0.5 points for numerically accurate answers</strong></p>
+</div>
+<div id="total-rate-schedule-and-channel-structure-contributions" class="section level2" number="4.2">
+<h2><span class="header-section-number">4.2</span> Total rate schedule and channel structure contributions</h2>
+<p><strong>Below, construct a sentence reporting the total rate schedule and channel structure contributions to the difference between the main and partner websites’ CCRs. Follow up with a sentence or two interpreting the results.</strong></p>
+<p><strong>Sub-total available: 0.5 points</strong></p>
+</div>
+</div>
+<div id="question-set-5" class="section level1" number="5">
+<h1><span class="header-section-number">5</span> Question set 5</h1>
+<p><strong>Total possible: 1 point</strong></p>
+<div id="data-collection-2" class="section level2" number="5.1">
+<h2><span class="header-section-number">5.1</span> Data collection</h2>
+<p><strong>For this problem, we return to the employee dataset from Exercise 2.</strong></p>
+<pre class="r"><code>q05_data &lt;- readRDS(&quot;data/q05_data.rds&quot;)</code></pre>
+</div>
+<div id="age-specific-termination-probability" class="section level2" number="5.2">
+<h2><span class="header-section-number">5.2</span> Age-specific termination probability</h2>
+<p><strong>For the oldest hire-year cohort, calculate the probability of termination within 30 days following 360 days of continuous employment (i.e. <span class="math inline">\({}_{30}q_{360}\)</span>). Sub-total: 0.5 points for numerically accurate response</strong></p>
+</div>
+<div id="age-specific-promotion-probability" class="section level2" number="5.3">
+<h2><span class="header-section-number">5.3</span> Age-specific promotion probability</h2>
+<p><strong>For the oldest hire-year cohort, calculate the probability of being promoted within 60 days of your 360<sup>th</sup> day of employment. Sub-total: 0.5 points for numerically accurate response</strong></p>
+</div>
+</div>
+<div id="question-set-6" class="section level1" number="6">
+<h1><span class="header-section-number">6</span> Question set 6</h1>
+<p><strong>Total available: 1 point</strong></p>
+<div id="data-collection-3" class="section level2" number="6.1">
+<h2><span class="header-section-number">6.1</span> Data collection</h2>
+<p><strong>Pretend you’re an analyst working at an aerospace engineering company. Your boss sends you a data set and tells you to calculate the probability that a jet engine component that was manufactured in 2019 failed within a year.</strong></p>
+<p><strong>The data has the following structure:</strong></p>
+<ul>
+<li><code>year</code><strong>: The calendar year in question</strong></li>
+<li><code>manufactured</code><strong>: The number of parts manufactured that year</strong></li>
+<li><code>failed</code><strong>: The number of parts that failed that year</strong></li>
+</ul>
+<pre class="r"><code>q06_data &lt;- readRDS(&quot;data/q06_data.rds&quot;)
+q06_data</code></pre>
+<pre><code>## # A tibble: 3 x 3
+##    year manufactured failed
+##   &lt;dbl&gt;        &lt;dbl&gt;  &lt;dbl&gt;
+## 1  2018       320276    115
+## 2  2019       540782    209
+## 3  2020       316001    103</code></pre>
+</div>
+<div id="bear-the-bad-news" class="section level2" number="6.2">
+<h2><span class="header-section-number">6.2</span> Bear the bad news</h2>
+<p><strong>Using the notation that we learned in class, explain below to your boss what information is missing from this data set but that is needed to complete the task. (0.5 points)</strong></p>
+<p><strong>Your boss says, “But just divide the parts that failed in 2019 by the parts manufactured in 2019. Should be close, right?” Below, explain to your boss why that’s not quite right. (0.5 points)</strong></p>
 </div>
 </div>
 
